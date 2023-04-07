@@ -1,17 +1,68 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import React from "react"
 import {Modal} from "@mantine/core"
-import gitwall from "../../images/gitwall.png"
+import gitwall2 from "../../images/gitwall2.png"
 import cross from "../../images/cross.png"
-
 import './Myprofile.css'
 import logo from "../../images/cipherlogo.jpeg"
-import map from "../../images/map.jpg"
+import axios from "axios";
 
 const Myprofile = () => {
   const[modal,setModal]=useState(false);
   const[modal1,setModal1]=useState(false);
-  const [modal2,setModal2]=useState(false);
+  const[modal2,setModal2]=useState(false);
+  const[linkedin, setlinkedin] = useState("false");
+  const[git,setGit]=useState("false");
+  const[facebook,setFacebook]=useState("false");
+  const[twitter,setTwitter]=useState("false");
+  const[instagram,setInstagram]=useState("false");
+  const[website,setWebsite]=useState("false");
+  const [userdetails, setUserdetails] = useState({})
+  useEffect(()=>{
+    axios
+      .get("http://localhost:5000/user/getuserdetails", {
+        headers: {
+          Authorization:
+            "bearer eyJhbGciOiJIUzI1NiJ9.NjQyZTY3ZTI4ZTMwNDg2NWY4OTVmN2Fi.aHBd4wTEeiT3L7jQAH_VZcUi383onCVvfs_j69Kv9Tg",
+        },
+      })
+      .then(function (response) {
+        // handle success
+        setUserdetails(response.data)
+        console.log(response.data);
+      })
+      .catch(function (error) {
+        // handle error
+        console.log(error);
+      });
+  },[])
+  const updateUser = ()=>{
+ axios
+   .get("http://localhost:5000/user/getuserdetails", {
+     headers: {
+       Authorization:
+         "bearer eyJhbGciOiJIUzI1NiJ9.NjQyZTY3ZTI4ZTMwNDg2NWY4OTVmN2Fi.aHBd4wTEeiT3L7jQAH_VZcUi383onCVvfs_j69Kv9Tg",
+     },
+     data: {
+      linkedin: linkedin,
+      github: git,
+      facebook:facebook,
+      twitter:twitter,
+      website:website,
+      instagram:instagram,
+      ///other fields
+     }
+   })
+   .then(function (response) {
+     // handle success
+     setUserdetails(response.data);
+     console.log(response.data);
+   })
+   .catch(function (error) {
+     // handle error
+     console.log(error);
+   });
+  }
 
   return (
     <div>
@@ -167,9 +218,15 @@ const Myprofile = () => {
           ></img>
         </div>
         <div className="col2">
-          <p className="hello">Hello,</p>
-          <p className="cipherschools">Cipher Schools</p>
-          <p className="email">******@cipherschools.com</p>
+          <p className="hello" onClick={() => setModal(true)}>
+            Hello,
+          </p>
+          <p className="cipherschools" onClick={() => setModal(true)}>
+            {userdetails?.username}
+          </p>
+          <p className="email" onClick={() => setModal(true)}>
+            {userdetails?.email}
+          </p>
         </div>
         <div className="col3">
           <p>**.2k Followers</p>
@@ -191,7 +248,7 @@ const Myprofile = () => {
         </div>
         <div className="ciphermap">
           <p className="aboutme">CIPHER MAP</p>
-          <img src={gitwall} className="map"></img>
+          <img src={gitwall2} className="map"></img>
         </div>
         <div className="ontheweb">
           <div className="title">
@@ -205,14 +262,27 @@ const Myprofile = () => {
                 type="link"
                 className="input"
                 placeholder="Linkedin"
+                onChange={(e) => {
+                  setlinkedin(e.target.value);
+                }}
               ></input>
               <p className="socialsheading">Github</p>
-              <input type="link" className="input" placeholder="Github"></input>
+              <input
+                type="link"
+                className="input"
+                placeholder="Github"
+                onChange={(e) => {
+                  setGit(e.target.value);
+                }}
+              ></input>
               <p className="socialsheading">Facebook</p>
               <input
                 type="link"
                 className="input"
                 placeholder="Facebook"
+                onChange={(e) => {
+                  setFacebook(e.target.value);
+                }}
               ></input>
             </div>
             <div className="column">
@@ -221,18 +291,27 @@ const Myprofile = () => {
                 type="link"
                 className="input"
                 placeholder="Twitter"
+                onChange={(e) => {
+                  setTwitter(e.target.value);
+                }}
               ></input>
               <p className="socialsheading">Instagram</p>
               <input
                 type="link"
                 className="input"
                 placeholder="Instagram"
+                onChange={(e) => {
+                  setInstagram(e.target.value);
+                }}
               ></input>
               <p className="socialsheading">website</p>
               <input
                 type="link"
                 className="input"
                 placeholder="Website"
+                onChange={(e) => {
+                  setWebsite(e.target.value);
+                }}
               ></input>
             </div>
           </div>
@@ -273,7 +352,9 @@ const Myprofile = () => {
         <div className="ontheweb">
           <div className="title">
             <p className="aboutme">INTERESTS</p>
-            <button className="editbutton" onClick={() => setModal2(true)}>Edit</button>
+            <button className="editbutton" onClick={() => setModal2(true)}>
+              Edit
+            </button>
           </div>
           <input
             type="password"
