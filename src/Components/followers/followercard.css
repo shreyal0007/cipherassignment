@@ -1,7 +1,7 @@
 .card {
   display: flex;
   flex-direction: column;
-  width: 14%;
+  width: 18%;
   height: 100%;
   background-color: #272c37;
   border-radius: 10px;
@@ -14,18 +14,21 @@
 .cardimage {
   display: flex;
   align-items: center;
+  align-self: center;
   justify-content: center;
+  width: 6rem;
+  height: 6rem;
+  
 }
 .name {
-  font-size: 1.3rem;
+  font-size: 1.1rem;
   font-weight: 800;
-
   color: white;
   margin-bottom: 0px;
-  margin-top: 0.5rem;
+  margin-top: 0.2rem;
 }
 .profession {
-  font-size: 1.1rem;
+  font-size: 0.8rem;
   font-weight: 500;
   color: white;
   margin-top: 0.1rem;
@@ -34,13 +37,14 @@
 .followers1 {
   margin-top: 0.1rem;
   color: white;
+  margin-bottom: 0.1rem;
 }
 .div4 {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
   align-items: center;
-  column-gap: 3rem;
+  column-gap: 2rem;
   row-gap: 2rem;
   width: 100%;
   max-width: 974px;

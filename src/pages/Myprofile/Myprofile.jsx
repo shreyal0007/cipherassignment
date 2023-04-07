@@ -38,7 +38,7 @@ const Myprofile = () => {
   },[])
   const updateUser = ()=>{
  axios
-   .get("http://localhost:5000/user/getuserdetails", {
+   .get("http://localhost:5000/user/updateuserdetails", {
      headers: {
        Authorization:
          "bearer eyJhbGciOiJIUzI1NiJ9.NjQyZTY3ZTI4ZTMwNDg2NWY4OTVmN2Fi.aHBd4wTEeiT3L7jQAH_VZcUi383onCVvfs_j69Kv9Tg",
@@ -200,7 +200,7 @@ const Myprofile = () => {
         <div className="modalfooter">
           <button
             className="modalbuttonscancel"
-            onClick={() => setModal(false)}
+            onClick={() => setModal2(false)}
           >
             Cancel
           </button>
@@ -253,7 +253,7 @@ const Myprofile = () => {
         <div className="ontheweb">
           <div className="title">
             <p className="aboutme">ON THE WEB</p>
-            <button className="editbutton">Edit</button>
+            <button className="editbutton">Save</button>
           </div>
           <div className="socials">
             <div className="column">
