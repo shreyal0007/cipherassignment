@@ -25,6 +25,7 @@ const Myprofile = () => {
   const[username,setUsername]=useState("");
   const[email,setEmail]=useState("");
   const[password,setPassword]=useState("");
+  const[newPassword,setNewPassword]=useState("");
 
   async function register(){
     let item={username,email,password}
@@ -63,8 +64,34 @@ const Myprofile = () => {
     window.location.reload();
   }
   async function updateprofile(){
-    let item={username,phone}
+    let item={username,phone,linkedin,git,facebook,twitter,instagram,website}
     console.log(item)
+    let body = {}
+    if(username!= ''){
+      body.username = username
+    }
+    if(phone!= ''){
+      body.phone = phone
+    }
+    if(linkedin!= ''){
+      body.linkedin = linkedin
+    }
+    if(git!= ''){
+      body.git = git
+    }
+    if(facebook!= ''){
+      body.facebook = facebook
+    }
+    if(twitter!= ''){
+      body.twitter = twitter
+    }
+    if(instagram!= ''){
+      body.instagram = instagram
+    }
+    if(website!= ''){
+      body.website = website
+    }
+    console.log(body)
     let to = localStorage.getItem("jwt");
     console.log(to)
     let result=await fetch("http://localhost:5000/user/updateuserdetails",
@@ -72,12 +99,29 @@ const Myprofile = () => {
       "Content-type":"application/json",
       "Accept":"application/json",
       "Authorization":"Bearer "+to},
-    body:JSON.stringify(item)})
+    body:JSON.stringify(body)})
     result=await result.json();
     let vari= result.username;
     localStorage.setItem("username",vari)
     console.log(vari)
     
+  }
+  async function updatePassword(){
+    let item={password,newPassword}
+    console.log("tettt")
+    console.log(item)
+    let to = localStorage.getItem("jwt");
+    let result=await fetch("http://localhost:5000/user/updatepassword",
+    {method:"PUT",headers:{"Content-type":"application/json","Accept":"application/json","Authorization":"Bearer "+to},
+    body:JSON.stringify(item)})
+    result=await result.json();
+    if(result.success==true){
+      alert("Password updated successfully")
+    }
+    else{
+      alert(result.message)
+    }
+    console.log(result)
   }
 
   // useEffect(()=>{
@@ -208,19 +252,16 @@ const Myprofile = () => {
               type="password"
               className="input8"
               placeholder="Current Password"
+              onChange={(e)=>{setPassword(e.target.value)}}
             ></input>
             <p className="heading1">New Password</p>
             <input
               type="password"
               className="input8"
               placeholder="New Password"
+              onChange={(e)=>{setNewPassword(e.target.value)}}
             ></input>
-            <p className="heading1">Confirm Password</p>
-            <input
-              type="password"
-              className="input8"
-              placeholder="Confirm Password"
-            ></input>
+           
           </div>
         </div>
         <div className="modalfooter">
@@ -230,7 +271,7 @@ const Myprofile = () => {
           >
             Cancel
           </button>
-          <button className="modalbuttonsave">Save</button>
+          <button className="modalbuttonsave"  onClick={updatePassword}>Save</button>
         </div>
       </Modal>
       <Modal
@@ -364,7 +405,7 @@ const Myprofile = () => {
             <input
               type="password"
               className="input8"
-              onchange={(e) => setPassword(e.target.value)}
+              onChange={(e) => setPassword(e.target.value)}
               placeholder="Enter your password"
             ></input>
           </div>
@@ -430,7 +471,7 @@ const Myprofile = () => {
         <div className="ontheweb">
           <div className="title">
             <p className="aboutme">ON THE WEB</p>
-            <button className="editbutton">Save</button>
+            <button className="editbutton" onClick={updateprofile}>Save</button>
           </div>
           <div className="socials">
             <div className="column">
