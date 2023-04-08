@@ -6,63 +6,130 @@ import cross from "../../images/cross.png"
 import './Myprofile.css'
 import logo from "../../images/cipherlogo.jpeg"
 import axios from "axios";
+import { Link } from "react-router-dom"
 
 const Myprofile = () => {
   const[modal,setModal]=useState(false);
   const[modal1,setModal1]=useState(false);
   const[modal2,setModal2]=useState(false);
+  const[loginmodal,setLoginmodal]=useState(false);
+  const[registermodal,setRegistermodal]=useState(false);
   const[linkedin, setlinkedin] = useState("false");
+  const[phone,setPhone]=useState("");
   const[git,setGit]=useState("false");
   const[facebook,setFacebook]=useState("false");
   const[twitter,setTwitter]=useState("false");
   const[instagram,setInstagram]=useState("false");
   const[website,setWebsite]=useState("false");
-  const [userdetails, setUserdetails] = useState({})
-  useEffect(()=>{
-    axios
-      .get("http://localhost:5000/user/getuserdetails", {
-        headers: {
-          Authorization:
-            "bearer eyJhbGciOiJIUzI1NiJ9.NjQyZTY3ZTI4ZTMwNDg2NWY4OTVmN2Fi.aHBd4wTEeiT3L7jQAH_VZcUi383onCVvfs_j69Kv9Tg",
-        },
-      })
-      .then(function (response) {
-        // handle success
-        setUserdetails(response.data)
-        console.log(response.data);
-      })
-      .catch(function (error) {
-        // handle error
-        console.log(error);
-      });
-  },[])
-  const updateUser = ()=>{
- axios
-   .get("http://localhost:5000/user/updateuserdetails", {
-     headers: {
-       Authorization:
-         "bearer eyJhbGciOiJIUzI1NiJ9.NjQyZTY3ZTI4ZTMwNDg2NWY4OTVmN2Fi.aHBd4wTEeiT3L7jQAH_VZcUi383onCVvfs_j69Kv9Tg",
-     },
-     data: {
-      linkedin: linkedin,
-      github: git,
-      facebook:facebook,
-      twitter:twitter,
-      website:website,
-      instagram:instagram,
-      ///other fields
-     }
-   })
-   .then(function (response) {
-     // handle success
-     setUserdetails(response.data);
-     console.log(response.data);
-   })
-   .catch(function (error) {
-     // handle error
-     console.log(error);
-   });
+  const [userdetails, setUserdetails] = useState({});
+  const[username,setUsername]=useState("");
+  const[email,setEmail]=useState("");
+  const[password,setPassword]=useState("");
+
+  async function register(){
+    let item={username,email,password}
+    console.log(item)
+    let result=await fetch("http://localhost:5000/user/register",
+    {method:"POST",headers:{"Content-type":"application/json","Accept":"application/json"},
+    body:JSON.stringify(item)})
+    result=await result.json();
+    let token=result.token;
+    localStorage.setItem("jwt",token);
+    console.log(result)
+    let emvar = result.user.email;
+    localStorage.setItem("email", emvar);
+    let uservar = result.user.username;
+    localStorage.setItem("username", uservar);
   }
+
+  async function login(){
+    let item={email,password}
+    console.log(item)
+    let result=await fetch("http://localhost:5000/user/login",
+    {method:"POST",headers:{"Content-type":"application/json","Accept":"application/json"},
+    body:JSON.stringify(item)})
+    result=await result.json();
+    let token=result.token;
+    localStorage.setItem("jwt",token);
+    console.log(result)
+    console.log(result.user.email)
+    let emvar=result.user.email
+    localStorage.setItem("email",emvar)
+    let uservar=result.user.username
+    localStorage.setItem("username",uservar)
+  }
+  function logout(){
+    localStorage.clear();
+    window.location.reload();
+  }
+  async function updateprofile(){
+    let item={username,phone}
+    console.log(item)
+    let to = localStorage.getItem("jwt");
+    console.log(to)
+    let result=await fetch("http://localhost:5000/user/updateuserdetails",
+    {method:"PUT",headers:{
+      "Content-type":"application/json",
+      "Accept":"application/json",
+      "Authorization":"Bearer "+to},
+    body:JSON.stringify(item)})
+    result=await result.json();
+    let vari= result.username;
+    localStorage.setItem("username",vari)
+    console.log(vari)
+    
+  }
+
+  // useEffect(()=>{
+  //   axios
+  //     .get("http://localhost:5000/user/getuserdetails", {
+
+  //       headers: {
+  //         Authorization:
+  //           "bearer eyJhbGciOiJIUzI1NiJ9.NjQyZTY3ZTI4ZTMwNDg2NWY4OTVmN2Fi.aHBd4wTEeiT3L7jQAH_VZcUi383onCVvfs_j69Kv9Tg",
+  //       },
+  //     })
+  //     .then(function (response) {
+  //       // handle success
+  //       setUserdetails(response.data)
+  //       console.log(response.data);
+  //     })
+  //     .catch(function (error) {
+  //       // handle error
+  //       console.log(error);
+  //     });
+  // },[])
+
+
+//   const updateUser = ()=>{
+//  axios
+//    .get("http://localhost:5000/user/updateuserdetails", {
+//      headers: {
+//        Authorization:
+//          "bearer eyJhbGciOiJIUzI1NiJ9.NjQyZTY3ZTI4ZTMwNDg2NWY4OTVmN2Fi.aHBd4wTEeiT3L7jQAH_VZcUi383onCVvfs_j69Kv9Tg",
+//      },
+//      data: {
+//       linkedin: linkedin,
+//       github: git,
+//       facebook:facebook,
+//       twitter:twitter,
+//       website:website,
+//       instagram:instagram,
+//       ///other fields
+//      }
+//    })
+//    .then(function (response) {
+//      // handle success
+//      setUserdetails(response.data);
+//      console.log(response.data);
+//    })
+//    .catch(function (error) {
+//      // handle error
+//      console.log(error);
+//    });
+//   }
+
+
 
   return (
     <div>
@@ -90,25 +157,20 @@ const Myprofile = () => {
             ></img>
           </div>
           <div className="modalcol2">
-            <p className="heading1">First Name</p>
+            <p className="heading1">Usename</p>
             <input
               type="text"
               className="input8"
-              placeholder="First Name"
+              placeholder="username"
+              onChange={(e) => {setUsername(e.target.value)}}
             ></input>
-            <p className="heading1">Last Name</p>
-            <input
-              type="text"
-              className="input8"
-              placeholder="Last Name"
-            ></input>
-            <p className="heading1">Email</p>
-            <input type="text" className="input8" placeholder="Email"></input>
+           
             <p className="heading1">Phone Number</p>
             <input
               type="text"
               className="input8"
               placeholder="Phone Number"
+              onChange={(e)=>{setPhone(e.target.value)}}
             ></input>
           </div>
         </div>
@@ -119,7 +181,10 @@ const Myprofile = () => {
           >
             Cancel
           </button>
-          <button className="modalbuttonsave">Save</button>
+          <button className="modalbuttonsave" onClick={async()=>{
+          await updateprofile();
+          setModal(false)
+          window.location.reload()}}>Save</button>
         </div>
       </Modal>
       <Modal
@@ -207,6 +272,112 @@ const Myprofile = () => {
           <button className="modalbuttonsave">Save</button>
         </div>
       </Modal>
+      <Modal
+        opened={loginmodal}
+        onClose={() => setLoginmodal(false)}
+        centered
+        overflow="inside"
+        overlayBlur="10"
+        withCloseButton={false}
+      >
+        <img
+          src={cross}
+          alt="close"
+          className="modalclosebutton"
+          onClick={() => setLoginmodal(false)}
+        />
+        <div className="modaltitle"> Login</div>
+        <div className="modalbody">
+          <div className="modalcol2">
+            <p className="heading1">Email</p>
+            <input
+              type="text"
+              className="input8"
+              placeholder="Enter Email"
+              onChange={(e) => {
+                setEmail(e.target.value);
+              }}
+            ></input>
+            <p className="heading1">Password</p>
+            <input
+              type="password"
+              className="input8"
+              placeholder="Enter Password"
+              onChange={(e) => {
+                setPassword(e.target.value);
+              }}
+            ></input>
+          </div>
+        </div>
+        <div className="modalfooter">
+          <div className="registerfooter">
+            <p>Do not have an account? </p>
+            <button
+              className="regbutton"
+              onClick={() => {
+                setLoginmodal(false);
+                setRegistermodal(true)} }
+            >
+              Register
+            </button>
+          </div>
+
+          <button className="modalbuttonsave" onClick={async()=> {
+            await login();
+            setLoginmodal(false); }}>
+            Login
+          </button>
+        </div>
+      </Modal>
+      <Modal
+        opened={registermodal}
+        onClose={() => setRegistermodal(false)}
+        centered
+        overflow="inside"
+        overlayBlur="10"
+        withCloseButton={false}
+      >
+        <img
+          src={cross}
+          alt="close"
+          className="modalclosebutton"
+          onClick={() => setRegistermodal(false)}
+        />
+        <div className="modaltitle"> Register</div>
+        <div className="modalbody">
+          <div className="modalcol2">
+            <p className="heading1">Username</p>
+            <input
+              type="text"
+              onChange={(e) => setUsername(e.target.value)}
+              className="input8"
+              placeholder="Username"
+            ></input>
+            <p className="heading1">Email</p>
+            <input
+              type="text"
+              className="input8"
+              placeholder="Email"
+              onChange={(e) => setEmail(e.target.value)}
+            ></input>
+            <p className="heading1">Password</p>
+            <input
+              type="password"
+              className="input8"
+              onchange={(e) => setPassword(e.target.value)}
+              placeholder="Enter your password"
+            ></input>
+          </div>
+        </div>
+        <div className="modalfooter">
+          <button className="modalbuttonsave" onClick={async()=>{
+            await register();
+            setRegistermodal(false);
+          }}>
+            Register
+          </button>
+        </div>
+      </Modal>
 
       <div className="header">
         <div className="col1">
@@ -222,14 +393,20 @@ const Myprofile = () => {
             Hello,
           </p>
           <p className="cipherschools" onClick={() => setModal(true)}>
-            {userdetails?.username}
+            {localStorage.getItem("username")}
           </p>
           <p className="email" onClick={() => setModal(true)}>
-            {userdetails?.email}
+            {localStorage.getItem("email")}
           </p>
         </div>
         <div className="col3">
           <p>**.2k Followers</p>
+          <button className="loginbutton" onClick={() => setLoginmodal(true)}>
+            Login
+          </button>
+          <button className="loginbutton" onClick={logout}>
+            Logout
+          </button>
         </div>
       </div>
       <div className="body" style={{ backgroundColor: "#f3f4fa" }}>

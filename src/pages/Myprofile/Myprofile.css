@@ -57,6 +57,7 @@
   border: none;
   border-radius: 0.2rem;
   width: 7.2%;
+  cursor: pointer;
   height: 2.2vw;
   color: white;
   margin-top: 0.5vw;
@@ -186,8 +187,8 @@
 }
 .modalbody > .modalcol1 > .modalimage {
   width: 100%;
-  height: 26%;
-  margin-top: 100%;
+  height: 50%;
+  margin-top: 50%;
   margin-bottom: auto;
 }
 .modalbody > .modalcol2 {
@@ -233,6 +234,7 @@
   color: white;
   margin-top: 0.5vw;
   font-size: small;
+  cursor: pointer;
 }
 .modalfooter > .modalbuttonscancel {
   margin-left: 1rem;
@@ -285,4 +287,37 @@
     color: white;
     margin-top: 0.5vw;
     font-size: small;
+}
+.loginbutton{
+    margin-left: 1rem;
+    background-color: #f2902e;
+    border: none;
+    border-radius: 0.2rem;
+    width: 80%;
+    height: 2.2vw;
+    color: white;
+    margin-top: 0.5vw;
+    font-size: small;
+    animation: zoom-in-zoom-out 1s ease infinite;
+    cursor: pointer;
+}
+.regbutton{
+    background-color:white;
+    border: none;
+    border-radius: 0.2rem;
+    width: 10%;
+    height: 2.2vw;
+    color: #f2902e;
+    margin-top: 1vw;
+    font-size: small;
+    animation: zoom-in-zoom-out 1s ease infinite;
+    cursor: pointer;
+
+}
+.registerfooter{
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    margin-top: 1rem;
+    justify-content: flex-end;
 }
