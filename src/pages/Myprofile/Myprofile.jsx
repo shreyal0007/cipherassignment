@@ -6,6 +6,7 @@ import cross from "../../images/cross.png"
 import './Myprofile.css'
 import logo from "../../images/cipherlogo.jpeg"
 import axios from "axios";
+import toast from "react-hot-toast"
 import { Link } from "react-router-dom"
 
 const Myprofile = () => {
@@ -63,54 +64,66 @@ const Myprofile = () => {
     localStorage.clear();
     window.location.reload();
   }
-  async function updateprofile(){
-    let item={username,phone,linkedin,git,facebook,twitter,instagram,website}
-    console.log(item)
-    let body = {}
-    if(username!= ''){
-      body.username = username
+  async function updateprofile() {
+    let item = {
+      username,
+      phone,
+      linkedin,
+      git,
+      facebook,
+      twitter,
+      instagram,
+      website,
+    };
+    console.log(item);
+    let body = {};
+    if (username != '') {
+      body.username = username;
     }
-    if(phone!= ''){
-      body.phone = phone
+    if (phone != '') {
+      body.phone = phone;
     }
-    if(linkedin!= ''){
-      body.linkedin = linkedin
+    if (linkedin != '') {
+      body.linkedin = linkedin;
     }
-    if(git!= ''){
-      body.git = git
+    if (git != '') {
+      body.git = git;
     }
-    if(facebook!= ''){
-      body.facebook = facebook
+    if (facebook != '') {
+      body.facebook = facebook;
     }
-    if(twitter!= ''){
-      body.twitter = twitter
+    if (twitter != '') {
+      body.twitter = twitter;
     }
-    if(instagram!= ''){
-      body.instagram = instagram
+    if (instagram != '') {
+      body.instagram = instagram;
     }
-    if(website!= ''){
-      body.website = website
+    if (website != '') {
+      body.website = website;
     }
-    console.log(body)
+    console.log(body);
     let to = localStorage.getItem("jwt");
-    console.log(to)
-    let result=await fetch("http://localhost:5000/user/updateuserdetails",
-    {method:"PUT",headers:{
-      "Content-type":"application/json",
-      "Accept":"application/json",
-      "Authorization":"Bearer "+to},
-    body:JSON.stringify(body)})
-    result=await result.json();
-    let vari= result.username;
-    localStorage.setItem("username",vari)
-    console.log(vari)
-    
+    console.log(to);
+    let result = await fetch("http://localhost:5000/user/updateuserdetails", {
+      method: "PUT",
+      headers: {
+        "Content-type": "application/json",
+        "Accept": "application/json",
+        "Authorization": "Bearer " + to,
+      },
+      body: JSON.stringify(body)
+    })
+    result = await result.json();
+    let vari = result.username;
+    localStorage.setItem("username", vari)
+    console.log(vari);
   }
   async function updatePassword(){
     let item={password,newPassword}
     console.log("tettt")
     console.log(item)
     let to = localStorage.getItem("jwt");
+    console.log(to)
     let result=await fetch("http://localhost:5000/user/updatepassword",
     {method:"PUT",headers:{"Content-type":"application/json","Accept":"application/json","Authorization":"Bearer "+to},
     body:JSON.stringify(item)})
@@ -206,15 +219,19 @@ const Myprofile = () => {
               type="text"
               className="input8"
               placeholder="username"
-              onChange={(e) => {setUsername(e.target.value)}}
+              onChange={(e) => {
+                setUsername(e.target.value);
+              }}
             ></input>
-           
+
             <p className="heading1">Phone Number</p>
             <input
               type="text"
               className="input8"
               placeholder="Phone Number"
-              onChange={(e)=>{setPhone(e.target.value)}}
+              onChange={(e) => {
+                setPhone(e.target.value);
+              }}
             ></input>
           </div>
         </div>
@@ -225,10 +242,17 @@ const Myprofile = () => {
           >
             Cancel
           </button>
-          <button className="modalbuttonsave" onClick={async()=>{
-          await updateprofile();
-          setModal(false)
-          window.location.reload()}}>Save</button>
+          <button
+            className="modalbuttonsave"
+            onClick={async () => {
+              console.log("updateprofile")
+              await updateprofile();
+              setModal(false);
+              window.location.reload();
+            }}
+          >
+            Save
+          </button>
         </div>
       </Modal>
       <Modal
@@ -252,16 +276,19 @@ const Myprofile = () => {
               type="password"
               className="input8"
               placeholder="Current Password"
-              onChange={(e)=>{setPassword(e.target.value)}}
+              onChange={(e) => {
+                setPassword(e.target.value);
+              }}
             ></input>
             <p className="heading1">New Password</p>
             <input
               type="password"
               className="input8"
               placeholder="New Password"
-              onChange={(e)=>{setNewPassword(e.target.value)}}
+              onChange={(e) => {
+                setNewPassword(e.target.value);
+              }}
             ></input>
-           
           </div>
         </div>
         <div className="modalfooter">
@@ -271,7 +298,15 @@ const Myprofile = () => {
           >
             Cancel
           </button>
-          <button className="modalbuttonsave"  onClick={updatePassword}>Save</button>
+          <button
+            className="modalbuttonsave"
+            onClick={async () => {
+              updatePassword();
+              toast("password updated successfully!");
+            }}
+          >
+            Save
+          </button>
         </div>
       </Modal>
       <Modal
@@ -357,15 +392,21 @@ const Myprofile = () => {
               className="regbutton"
               onClick={() => {
                 setLoginmodal(false);
-                setRegistermodal(true)} }
+                setRegistermodal(true);
+              }}
             >
               Register
             </button>
           </div>
 
-          <button className="modalbuttonsave" onClick={async()=> {
-            await login();
-            setLoginmodal(false); }}>
+          <button
+            className="modalbuttonsave"
+            onClick={async () => {
+              await login();
+              setLoginmodal(false);
+              toast("logged in successfullly!");
+            }}
+          >
             Login
           </button>
         </div>
@@ -411,10 +452,14 @@ const Myprofile = () => {
           </div>
         </div>
         <div className="modalfooter">
-          <button className="modalbuttonsave" onClick={async()=>{
-            await register();
-            setRegistermodal(false);
-          }}>
+          <button
+            className="modalbuttonsave"
+            onClick={async () => {
+              await register();
+              setRegistermodal(false);
+              toast("registered successfully!");
+            }}
+          >
             Register
           </button>
         </div>
@@ -445,9 +490,6 @@ const Myprofile = () => {
           <button className="loginbutton" onClick={() => setLoginmodal(true)}>
             Login
           </button>
-          <button className="loginbutton" onClick={logout}>
-            Logout
-          </button>
         </div>
       </div>
       <div className="body" style={{ backgroundColor: "#f3f4fa" }}>
@@ -471,7 +513,15 @@ const Myprofile = () => {
         <div className="ontheweb">
           <div className="title">
             <p className="aboutme">ON THE WEB</p>
-            <button className="editbutton" onClick={updateprofile}>Save</button>
+            <button
+              className="editbutton"
+              onClick={async () => {
+                updateprofile();
+                toast("web details updated");
+              }}
+            >
+              Save
+            </button>
           </div>
           <div className="socials">
             <div className="column">
@@ -538,7 +588,7 @@ const Myprofile = () => {
         <div className="professionalinfo">
           <div className="title">
             <p className="aboutme">PROFESSIONAL INFORMATION</p>
-            <button className="editbutton">Edit</button>
+            <button className="editbutton">Save</button>
           </div>
           <div className="column">
             <p className="socialsheading">Highest Education</p>
@@ -579,6 +629,11 @@ const Myprofile = () => {
             className="input5"
             placeholder="enter your interests"
           ></input>
+        </div>
+        <div className="xyz">
+          <button className="logoutbutton" onClick={logout}>
+            Logout
+          </button>
         </div>
       </div>
     </div>
